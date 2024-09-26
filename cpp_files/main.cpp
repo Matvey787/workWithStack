@@ -132,5 +132,4 @@ void stackAssertFunc(stack_t* stack, const char* fileName, const char* lineNumbe
 
 void reallocData(StackElem_t** data, size_t capacity){
     *data = (StackElem_t*)realloc(*data, sizeof(StackElem_t)*capacity);
-    if (*data == NULL)
 }
