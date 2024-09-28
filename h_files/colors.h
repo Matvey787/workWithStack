@@ -1,3 +1,6 @@
+#ifndef COLORS
+#define COLORS
+
 #define BLACK  "\033[30m"
 #define RED    "\033[31m"
 #define GREEN  "\033[32m"
@@ -7,3 +10,5 @@
 #define EXITCOLOR "\033[0m"
 
 #define WHITE_BLACKBACKGROUND  "\033[30;47m"
+
+#endif

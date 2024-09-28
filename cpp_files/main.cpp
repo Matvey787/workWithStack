@@ -1,108 +1,93 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+
 #include "../h_files/colors.h"
+#include "../h_files/macros.h"
+#include "../h_files/stackConstructor.h"
+#include "../h_files/stackPushPop.h"
+#include "../h_files/errorNames.h"
 
 #define CHECK_ if (!smthGoBad) smthGoBad = 
 
-typedef double StackElem_t;
 
-struct stack_t{
-    StackElem_t* data;
-    size_t size;
-    size_t capacity;
-};
+void stackDump(stack_t* stack ON_DEBUG(,const char* stackName, const char* fileName, int fileLine, const char* calledFunction));
 
-int stackPush(stack_t* stack, double number);
-void stackDump(stack_t* stack);
-double stackPop(stack_t* stack);
+
+int stackInit(stack_t* stack ON_DEBUG(, const char* fileName, int fileLine));
 void stackDestroy(stack_t* stack);
+
+
+
 int stackError(stack_t* stack);
-int stackInit(stack_t* stack);
 void stackAssertFunc(stack_t* stack, const char* fileName, const char* lineNumber);
-void reallocData(StackElem_t** data, size_t capacity);
+
 
 const int startCapasity = 1;
 
-enum errors{
-    INCORRECT_STACK = 404
-};
+
 
 int main(){
-    double x, y, z;
+
     stack_t stack;
-    stackInit(&stack);
-    z = stackPop(&stack);
+    MACRO_stackInit(stack);
     
     int smthGoBad = 0;
     CHECK_ stackPush(&stack, 1.2);
+    MACRO_stackDump(stack);
+
+/*     CHECK_ stackPush(&stack, 3.4);
     stackDump(&stack);
-    y = stackPop(&stack);
-    CHECK_ stackPush(&stack, 3.4);
-    stackDump(&stack);
+
     CHECK_ stackPush(&stack, 1.1);
     stackDump(&stack);
-    CHECK_ stackPush(&stack, 3.5);
-    stackDump(&stack);
+
     CHECK_ stackPush(&stack, 3.5);
     stackDump(&stack);
 
-    x = stackPop(&stack);
-    printf("%g %g %g\n", x, y, z);
+    CHECK_ stackPush(&stack, 3.5);
     stackDump(&stack);
+
+    //x = stackPop(&stack);
+    stackDump(&stack); */
+
+    stackDestroy(&stack);
 }
 
-int stackInit(stack_t* stack){
+int stackInit(stack_t* stack ON_DEBUG(, const char* fileName, const int fileLine)){
+
     stack->capacity = startCapasity;
     stack->size = 0;
     stack->data = (StackElem_t*)calloc(stack->capacity, sizeof(StackElem_t));
 
-    stackAssertFunc(stack, "main.cpp", "48");
+    ON_DEBUG(stack->info.fileName_WhereStackHasBeenCreated = fileName;)
+    ON_DEBUG(stack->info.line_WhereStackHasBeenCreated = fileLine;)
+    ON_DEBUG(stack->info.function_WhereStackHasBeenCreated = __func__;)
 
     return 1;
+
 }
 
-int stackPush(stack_t* stack, double number){
-    //printf("%lu\n", stack->size);
-    if (stack->size + 1 > stack->capacity){
-        stack->capacity *= 2;
-        reallocData(&(stack->data), stack->capacity);
-    }
-    /* printf("%lu %lu\n", stack->capacity, stack->size); */
+void stackDump(stack_t* stack ON_DEBUG(,const char* stackName, const char* fileName, int fileLine, const char* calledFunction)){
 
-    if (stackError(stack) == INCORRECT_STACK) return 1;
+    printf("stack_t[%p]\n", stack);
 
-    stack->data[stack->size++] = number;
-    return 0;
-}
+    ON_DEBUG
+    (
+    printf("Called from %s:%d (%s)\n", fileName, fileLine, calledFunction);
+    printf("Stack %s was created in %s:%d by function %s\n", stackName, stack->info.fileName_WhereStackHasBeenCreated,
+     stack->info.line_WhereStackHasBeenCreated = fileLine, stack->info.function_WhereStackHasBeenCreated);
+    )
 
-double stackPop(stack_t* stack){
-
-    stackAssertFunc(stack, "main.cpp", "78");
-
-    if (stack->size == 0){ printf("stack is empty\n"); return INCORRECT_STACK; }
-
-    --stack->size;
-
-    if (1 < stack->size && stack->size <= (stack->capacity/4)) stack->data = (StackElem_t*)realloc(stack->data, sizeof(StackElem_t)*stack->size); 
-
-
-    return stack->data[stack->size];
-}
-
-void stackDump(stack_t* stack){
-
-    if (stack->data == NULL) {printf("data in stack is null\n"); return; }
+    printf("{\n");
 
     printf("%sStack:%s \n", WHITE_BLACKBACKGROUND, EXITCOLOR);
     printf("%scapasity:%s %lu \n%ssize:%s %lu\n", YELLOW, WHITE, stack->capacity, YELLOW, WHITE,stack->size);
-    printf("data: ");
-
+    printf("data: \n");
     for (size_t i = 0; i < stack->capacity; i++)
-        printf("%g  ", stack->data[i]);
+        printf("%g \n", stack->data[i]);
 
-    printf("\n");
-    printf("--------------------------------\n");
+    printf("}\n");
 }
 
 void stackDestroy(stack_t* stack){
@@ -124,12 +109,10 @@ int stackError(stack_t* stack){
 void stackAssertFunc(stack_t* stack, const char* fileName, const char* lineNumber){
     if (stackError(stack) == INCORRECT_STACK)
     {
-        stackDump(stack);
+        //stackDump(stack);
         printf("something bad with stack in %s:%s\n", fileName, lineNumber);
         assert(0 && "stack is broken");
     }
 }
 
-void reallocData(StackElem_t** data, size_t capacity){
-    *data = (StackElem_t*)realloc(*data, sizeof(StackElem_t)*capacity);
-}
+
