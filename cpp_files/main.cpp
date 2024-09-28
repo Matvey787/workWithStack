@@ -12,16 +12,6 @@
 #define CHECK_ if (!smthGoBad) smthGoBad = 
 
 
-
-
-
-
-
-
-
-
-
-
 int main(){
 
     stack_t stack;
@@ -48,5 +38,3 @@ int main(){
 
     stackDestroy(&stack);
 }
-
-

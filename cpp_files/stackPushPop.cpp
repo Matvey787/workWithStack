@@ -2,15 +2,17 @@
 #include <stdlib.h>
 
 #include "../h_files/stackConstructor.h"
+#include "../h_files/stackAssertFunction.h"
 #include "../h_files/stackPushPop.h"
 #include "../h_files/errorNames.h"
+#include "../h_files/macros.h"
 
 static void reallocData(StackElem_t** data, size_t capacity);
 
 int stackPush(stack_t* stack, double number){
-
-
     
+    MACRO_stackAssertFunction((*stack));
+
     if (stack->size > stack->capacity){
         stack->capacity *= 2;
         reallocData(&(stack->data), stack->capacity);
@@ -35,6 +37,6 @@ double stackPop(stack_t* stack){
     return stack->data[stack->size];
 }
 
-void reallocData(StackElem_t** data, size_t capacity){
+static void reallocData(StackElem_t** data, size_t capacity){
     *data = (StackElem_t*)realloc(*data, sizeof(StackElem_t)*capacity);
 }

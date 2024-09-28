@@ -12,7 +12,9 @@
 
 //-------------MACRO FUNCTIONS----------------
 #define MACRO_stackInit(stack) stackInit((&stack) ON_DEBUG(, (__FILE__), (__LINE__)))
-#define MACRO_stackAssertFunction(stack) stackAssertFunc((&stack), (__FILE__), (__LINE__))
+
+#define MACRO_stackAssertFunction(stack) stackAssertFunc((&stack), (__FILE__), (__LINE__), (__func__))
+
 #define MACRO_stackDump(stack) stackDump((&stack) ON_DEBUG(, (#stack), (__FILE__), (__LINE__), (__func__)))
 
 #endif
