@@ -2,7 +2,10 @@
 #define ERRORNAMES
 
 enum errors{
-    INCORRECT_STACK = 404
+    NO_ERROR = 0,
+    INCORRECT_STACK_POINTER = 1,
+    INCORRECT_DATA_POINTER = 2,
+    LACK_OF_CAPACITY = 4
 };
 
 #endif

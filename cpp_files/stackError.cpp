@@ -3,10 +3,14 @@
 #include "../h_files/errorNames.h"
 #include "../h_files/stackError.h"
 
-int stackError(stack_t* stack){
+errors stackError(stack_t* stack){
 
-    if (stack == NULL) {printf("stack is not exist\n"); return INCORRECT_STACK; }
-    if (stack->data == NULL) {printf("stack data is NULL\n"); return INCORRECT_STACK; }
-    if (stack->size > stack->capacity) {printf("capasity is less then size\n"); return INCORRECT_STACK; }
-    return 0;
+    if (stack == NULL) return INCORRECT_STACK_POINTER; 
+
+    if (stack->data == NULL) return INCORRECT_DATA_POINTER;
+
+    if (stack->size > stack->capacity + 1) return LACK_OF_CAPACITY;
+
+    return NO_ERROR;
+
 }

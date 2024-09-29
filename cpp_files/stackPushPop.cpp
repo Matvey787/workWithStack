@@ -7,15 +7,15 @@
 #include "../h_files/errorNames.h"
 #include "../h_files/macros.h"
 
-static void reallocData(StackElem_t** data, size_t capacity);
+static void init_Realloc_Data(StackElem_t** data, size_t capacity);
 
 int stackPush(stack_t* stack, double number){
     
     MACRO_stackAssertFunction((*stack));
 
-    if (stack->size > stack->capacity){
+    if (stack->size + 1 > stack->capacity){
         stack->capacity *= 2;
-        reallocData(&(stack->data), stack->capacity);
+        init_Realloc_Data(&(stack->data), stack->capacity);
     }
 
     stack->data[stack->size++] = number;
@@ -25,18 +25,21 @@ int stackPush(stack_t* stack, double number){
 
 double stackPop(stack_t* stack){
 
-    //stackAssertFunc(stack, "main.cpp", "78");
+    MACRO_stackAssertFunction((*stack));
 
-    if (stack->size == 0){ printf("stack is empty\n"); return INCORRECT_STACK; }
+    if (stack->size == 0){ printf("stack is empty\n"); return -666; }
 
-    --stack->size;
+    StackElem_t popElement = stack->data[--stack->size];
 
-    if (1 < stack->size && stack->size <= (stack->capacity/4)) stack->data = (StackElem_t*)realloc(stack->data, sizeof(StackElem_t)*stack->size); 
+    if ((0 < stack->size) && (stack->size <= (stack->capacity/4))){
+        stack->capacity = stack->capacity / 4;
+        init_Realloc_Data(&(stack->data), stack->capacity); 
+    } 
 
 
-    return stack->data[stack->size];
+    return popElement;
 }
 
-static void reallocData(StackElem_t** data, size_t capacity){
+static void init_Realloc_Data(StackElem_t** data, size_t capacity){
     *data = (StackElem_t*)realloc(*data, sizeof(StackElem_t)*capacity);
 }

@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include "macros.h"
 #include "stackConstructor.h"
+#include "errorNames.h"
 
-int stackError(stack_t* stack);
+errors stackError(stack_t* stack);
 
 #endif

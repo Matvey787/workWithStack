@@ -12,7 +12,7 @@ void stackDump(stack_t* stack ON_DEBUG(,const char* stackName, const char* fileN
     ON_DEBUG
     (
     printf("Called from %s:%d (%s)\n", fileName, fileLine, calledFunction);
-    printf("Stack %s was created in %s:%d by function %s\n", stackName, stack->info.fileName_WhereStackHasBeenCreated,
+    printf("Stack [%s] was created in %s:%d by function %s\n", stackName, stack->info.fileName_WhereStackHasBeenCreated,
      stack->info.line_WhereStackHasBeenCreated = fileLine, stack->info.function_WhereStackHasBeenCreated);
     )
 
