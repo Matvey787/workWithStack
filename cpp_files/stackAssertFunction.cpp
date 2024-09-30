@@ -18,11 +18,11 @@ void stackAssertFunc(stack_t* stack, const char* fileName, int lineNumber, const
     {
         printf("Something bad with stack in %s:%d in function %s\n", fileName, lineNumber, calledFunction);
         printf("Error [%s%s%s]\n", RED, chooseError(error), EXITCOLOR);
-        assert(0 && "stack is broken");
 
         if (error != INCORRECT_STACK_POINTER)
             MACRO_stackDump(*stack);
 
+        assert(0 && "stack is broken");
         
     }
 

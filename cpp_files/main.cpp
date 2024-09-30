@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "../h_files/macros.h"
+#include "../h_files/stressTests.h"
 #include "../h_files/stackConstructor.h"
 #include "../h_files/stackPushPop.h"
 #include "../h_files/errorNames.h"
 #include "../h_files/stackInitDestroy.h"
 #include "../h_files/stackDump.h"
+#include "../h_files/macros.h"
 
 
 #define CHECK_ if (!smthGoBad) smthGoBad = 
@@ -15,7 +16,9 @@
 
 int main(){
 
-    stack_t stack;
+    startStressTest();
+
+    /* stack_t stack;
     MACRO_stackInit(&stack);
     
     int smthGoBad = 0;
@@ -40,5 +43,5 @@ int main(){
     stackPop(&stack);
     MACRO_stackDump(stack);
 
-    stackDestroy(&stack);
+    stackDestroy(&stack); */
 }

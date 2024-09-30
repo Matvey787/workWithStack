@@ -19,7 +19,7 @@ void stackDump(stack_t* stack ON_DEBUG(,const char* stackName, const char* fileN
     printf("{\n");
 
     printf("%sStack:%s \n", WHITE_BLACKBACKGROUND, EXITCOLOR);
-    printf("%scapasity:%s %lu \n%ssize:%s %lu %sHash:%s %x\n", YELLOW, WHITE, stack->capacity, YELLOW, WHITE, stack->size, YELLOW, WHITE, stack->hash);
+    printf("%scapasity:%s %lu \n%ssize:%s %lu %sHash:%s %x\n", YELLOW, WHITE, stack->capacity, YELLOW, WHITE, stack->size, YELLOW, WHITE, (unsigned int)stack->hash);
     printf("data: \n");
     for (size_t i = 0; i < stack->capacity; i++)
         printf("%g \n", stack->data[i]);
