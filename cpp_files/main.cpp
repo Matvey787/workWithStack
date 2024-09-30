@@ -16,7 +16,7 @@
 int main(){
 
     stack_t stack;
-    MACRO_stackInit(&stack, 10);
+    MACRO_stackInit(&stack);
     
     int smthGoBad = 0;
     CHECK_ stackPush(&stack, 1.2);

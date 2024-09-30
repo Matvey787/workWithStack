@@ -13,10 +13,12 @@ struct infoOfStack{
 };
 
 struct stack_t{
-    ON_DEBUG(infoOfStack info;)
-    StackElem_t* data;
     size_t size;
     size_t capacity;
+    StackElem_t* data;
+    
+    unsigned long hash;
+    ON_DEBUG(infoOfStack info;)
 };
 
 #endif

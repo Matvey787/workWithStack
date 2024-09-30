@@ -43,6 +43,10 @@ static const char* chooseError(errors error){
     case LACK_OF_CAPACITY:
         return "LACK_OF_CAPACITY";
         break;
+    
+    case WARNINNG_INCORRECT_HASH:
+        return "WARNINNG_INCORRECT_HASH";
+        break;
 
     case NO_ERROR:
         return "everything ok";

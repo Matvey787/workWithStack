@@ -5,7 +5,8 @@ enum errors{
     NO_ERROR = 0,
     INCORRECT_STACK_POINTER = 1,
     INCORRECT_DATA_POINTER = 2,
-    LACK_OF_CAPACITY = 4
+    LACK_OF_CAPACITY = 4,
+    WARNINNG_INCORRECT_HASH = 8
 };
 
 #endif
