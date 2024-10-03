@@ -11,12 +11,12 @@
 struct tortureChamber_t{
     uint64_t leftExecutioner[1];
     stack_t stack_in_tortureChamber;
-    char rightExecutioner[1];
+    uint64_t rightExecutioner[1];
 };
 
 void startStressTest(){
     
-    tortureChamber_t tortureChamber;
+    tortureChamber_t tortureChamber = {};
     stack_t* stack;
     stack = &(tortureChamber.stack_in_tortureChamber);
 
@@ -26,7 +26,7 @@ void startStressTest(){
     CHECK_ stackPush(stack, 1.2);
     MACRO_stackDump(*stack);
 
-    (tortureChamber.leftExecutioner)[1] = 2;
+    (tortureChamber.leftExecutioner)[3] = 2;
 
     CHECK_ stackPush(stack, 3.4);
     MACRO_stackDump(*stack);

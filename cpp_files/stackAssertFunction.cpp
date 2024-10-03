@@ -48,6 +48,10 @@ static const char* chooseError(errors error){
         return "WARNINNG_INCORRECT_HASH";
         break;
 
+    case WARNINNG_BROKEN_CANARY:
+        return "WARNINNG_BROKEN_CANARY";
+        break;
+
     case NO_ERROR:
         return "everything ok";
         break;

@@ -8,36 +8,62 @@
 #include "../h_files/stackInitDestroy.h"
 #include "../h_files/macros.h"
 
-const int c_startCapacity = 1;
+static const int c_startCapacity = 1;
 
-
-int stackInit(stack_t* stack ON_DEBUG(, const char* fileName, const int fileLine)){
-
-    stack->capacity = c_startCapacity;
-    stack->size = 0;
-    stack->data = (StackElem_t*)calloc(stack->capacity, sizeof(StackElem_t));
-    stack->hash = countHash(stack);
+int stackInitDebug(stack_t* stack, const char* fileName, const int fileLine) {
 
     ON_DEBUG(stack->info.fileName_WhereStackHasBeenCreated = fileName;)
     ON_DEBUG(stack->info.line_WhereStackHasBeenCreated = fileLine;)
     ON_DEBUG(stack->info.function_WhereStackHasBeenCreated = __func__;)
+
+
+    return stackInit(stack);
+}
+
+int stackInit(stack_t* stack){
+
+#ifdef TURN_ON_CANARIES
+    stack->capacity = c_startCapacity+2;
+    stack->data = (StackElem_t*)calloc((stack->capacity), sizeof(StackElem_t));
+    stack->data[0] = canaryConst;
+    stack->data[stack->capacity-1] = canaryConst;
+#else
+    stack->capacity = c_startCapacity;
+    stack->data = (StackElem_t*)calloc((stack->capacity), sizeof(StackElem_t));
+#endif
+
+    stack->size = 0;
+    ON_HASH(stack->hash = countHash(stack);)
 
     return 1;
 
 }
 
-static void init_Data(StackElem_t** data, size_t capacity);
 
-int stackInit(stack_t* stack, size_t user_startCapacity ON_DEBUG(, const char* fileName, const int fileLine)){
-
-    stack->capacity = user_startCapacity;
-    stack->size = 0;
-    init_Data(&(stack->data), stack->capacity);
-    stack->hash = countHash(stack);
+int stackInitDebug(stack_t* stack, size_t user_startCapacity, const char* fileName, const int fileLine) {
 
     ON_DEBUG(stack->info.fileName_WhereStackHasBeenCreated = fileName;)
     ON_DEBUG(stack->info.line_WhereStackHasBeenCreated = fileLine;)
     ON_DEBUG(stack->info.function_WhereStackHasBeenCreated = __func__;)
+
+
+    return stackInit(stack, user_startCapacity);
+}
+
+int stackInit(stack_t* stack, size_t user_startCapacity){ // TODO
+
+#ifdef TURN_ON_CANARIES
+    stack->capacity = user_startCapacity+2;
+    stack->data = (StackElem_t*)calloc((stack->capacity), sizeof(StackElem_t));
+    stack->data[0] = canaryConst;
+    stack->data[stack->capacity-1] = canaryConst;
+#else
+    stack->capacity = user_startCapacity;
+    stack->data = (StackElem_t*)calloc((stack->capacity), sizeof(StackElem_t));
+#endif
+
+    stack->size = 0;
+    ON_HASH(stack->hash = countHash(stack);)
 
     return 1;
 
@@ -47,11 +73,9 @@ void stackDestroy(stack_t* stack){
 
     MACRO_stackAssertFunction((*stack));
 
-    free(stack->data);
-}
+    free(stack->data); stack->data = nullptr;
 
-static void init_Data(StackElem_t** data, size_t capacity){
-
-    *data = (StackElem_t*)calloc(capacity, sizeof(StackElem_t));
-
+    stack->capacity = 0;
+    ON_HASH(stack->hash = 0;)
+    stack->size = 0;
 }

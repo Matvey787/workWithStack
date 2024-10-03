@@ -1,8 +1,11 @@
 #ifndef STACKCONSTRUCTOR
 #define STACKCONSTRUCTOR
 
+#include <stdint.h>
 #include <stdio.h>
 #include "macros.h"
+
+const int64_t canaryConst = 0xDED;
 
 typedef double StackElem_t;
 
@@ -17,7 +20,7 @@ struct stack_t{
     size_t capacity;
     StackElem_t* data;
     
-    unsigned long hash;
+    ON_HASH(unsigned long hash;)
     ON_DEBUG(infoOfStack info;)
 };
 

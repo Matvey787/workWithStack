@@ -16,9 +16,9 @@
 
 int main(){
 
-    startStressTest();
+    //startStressTest();
 
-    /* stack_t stack;
+    stack_t stack = {};
     MACRO_stackInit(&stack);
     
     int smthGoBad = 0;
@@ -43,5 +43,5 @@ int main(){
     stackPop(&stack);
     MACRO_stackDump(stack);
 
-    stackDestroy(&stack); */
+    stackDestroy(&stack);
 }
