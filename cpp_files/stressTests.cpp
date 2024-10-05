@@ -6,6 +6,8 @@
 #include "../h_files/stackDump.h"
 #include "../h_files/macros.h"
 
+#include "../h_files/countHash.h"
+
 #define CHECK_ if (!smthGoBad) smthGoBad = 
 
 struct tortureChamber_t{
@@ -17,16 +19,18 @@ struct tortureChamber_t{
 void startStressTest(){
     
     tortureChamber_t tortureChamber = {};
-    stack_t* stack;
+    stack_t* stack = nullptr;
     stack = &(tortureChamber.stack_in_tortureChamber);
 
-    MACRO_stackInit(stack);
+    MACRO_stackInit(stack, 100);
     
     int smthGoBad = 0;
     CHECK_ stackPush(stack, 1.2);
     MACRO_stackDump(*stack);
 
-    (tortureChamber.leftExecutioner)[3] = 2;
+    //(tortureChamber.leftExecutioner)[1] = 2;
+
+    stack->capacity = 2;
 
     CHECK_ stackPush(stack, 3.4);
     MACRO_stackDump(*stack);

@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <assert.h>
 
 #include "../h_files/countHash.h"
 #include "../h_files/stackConstructor.h"
@@ -12,19 +14,22 @@ static void realloc_Data(StackElem_t** data, size_t capacity);
 
 int stackPush(stack_t* stack, double number){
     
-    MACRO_stackAssertFunction((*stack)); // TODO check stack == nullptr
+    if (stack == nullptr) {
+        printf("NULL pointer was passed"); 
+        return 1;
+    }
+
+    MACRO_stackAssertFunction((*stack));
 
 #ifdef TURN_ON_CANARIES
     //               \/ for canaries
-    if (stack->size + 3 > stack->capacity){
+    if (stack->size + 2 >= stack->capacity){
         stack->capacity = 2*(stack->capacity - 2) + 2;
         realloc_Data(&(stack->data), stack->capacity);
     }
 
     stack->data[++stack->size] = number;
     stack->data[stack->size + 1] = canaryConst;
-
-    stack->hash = countHash(stack);
 #else 
 
     if (stack->size >= stack->capacity){
@@ -33,10 +38,9 @@ int stackPush(stack_t* stack, double number){
     }
 
     stack->data[stack->size++] = number;
+#endif
 
     ON_HASH(stack->hash = countHash(stack);)
-
-#endif
     return 0;
 
 }
@@ -45,7 +49,7 @@ double stackPop(stack_t* stack){
 
     MACRO_stackAssertFunction((*stack));
     
-    if (stack->size == 0){ printf("stack is empty\n"); return -666; }
+    if (stack->size == 0){ printf("stack is empty\n"); return NAN; }
 
 
 #ifdef TURN_ON_CANARIES
@@ -70,10 +74,16 @@ double stackPop(stack_t* stack){
 
     ON_HASH(stack->hash = countHash(stack);)
 #endif
+
     return popElement;
 
 }
 
 static void realloc_Data(StackElem_t** data, size_t capacity){
+
     *data = (StackElem_t*)realloc(*data, sizeof(StackElem_t)*capacity);
+
+    if (*data == NULL) fprintf(stderr, "can't realloc data   :(\n");
+    assert(*data != NULL && "can't realloc data   :(\n");
+
 }

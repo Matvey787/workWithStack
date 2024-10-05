@@ -13,17 +13,16 @@ static const char* chooseError(errors error);
 void stackAssertFunc(stack_t* stack, const char* fileName, int lineNumber, const char* calledFunction){
 
     errors error = NO_ERROR;
-
+    
     if ((error = stackError(stack)) != NO_ERROR)
     {
-        printf("Something bad with stack in %s:%d in function %s\n", fileName, lineNumber, calledFunction);
-        printf("Error [%s%s%s]\n", RED, chooseError(error), EXITCOLOR);
+        fprintf(stderr, "Something bad with stack in %s:%d in function %s\n", fileName, lineNumber, calledFunction);
+        fprintf(stderr, "Error [%s%s%s]\n", RED, chooseError(error), EXITCOLOR);
 
         if (error != INCORRECT_STACK_POINTER)
             MACRO_stackDump(*stack);
 
         assert(0 && "stack is broken");
-        
     }
 
 }

@@ -26,6 +26,7 @@ void stackDump(stack_t* stack){
     #endif
 
     printf("%sStack:%s \n", WHITE_BLACKBACKGROUND, EXITCOLOR);
+    //printf("%scapasity:%s %lu %s\n%ssize:%s %lu", YELLOW, WHITE, stack->capacity, ON_CANARY("(with two canaries)",) YELLOW, WHITE, stack->size);
     printf("%scapasity:%s %lu \n%ssize:%s %lu", YELLOW, WHITE, stack->capacity, YELLOW, WHITE, stack->size);
     ON_HASH(printf(" %sHash:%s %x", YELLOW, WHITE, (unsigned int)stack->hash));
 
@@ -34,10 +35,11 @@ void stackDump(stack_t* stack){
 
         printf("    stack[%lu] = ", i);
 
-        #ifdef TURN_ON_CANARIES
+
+        #ifdef TURN_ON_CANARIES // FIXME if else
             (i == 0 || i == stack->size+1) ? ((i == 0) ? printf("Left canary: %x \n", (unsigned)stack->data[i]) :
-            printf("Right canary: %x \n", (unsigned)stack->data[i])) :
-            printf("%g \n", stack->data[i]);
+                                                         printf("Right canary: %x \n", (unsigned)stack->data[i])) :
+                                              printf("%g \n", stack->data[i]);
         #else
             printf("%g \n", stack->data[i]);
         #endif

@@ -1,20 +1,30 @@
 #include "../h_files/stackConstructor.h"
 #include "../h_files/countHash.h"
+
+static unsigned long summBytesToHash(unsigned long important_bytes, unsigned char* bytes_pointer);
+
 unsigned long countHash(stack_t* stack){
 
+    ON_HASH(long unsigned remembered_hash = stack->hash; stack->hash = 0; )
+
     long unsigned hash = 5381;
-    unsigned long important_bytes = sizeof(stack->size) + sizeof(stack->capacity) + sizeof(stack->data);
-    char* byte_ptr = (char*)stack;
 
-    for (size_t readedBytes = 0; readedBytes < important_bytes; readedBytes++){
-        hash += ((hash*31) ^ (size_t)(*byte_ptr++));
-    }
+    hash += summBytesToHash(sizeof(stack), (unsigned char*)stack);
+    hash += summBytesToHash((stack->size)*sizeof(StackElem_t), (unsigned char*)stack->data);
 
-    byte_ptr = (char*)stack->data;
-    for (size_t readedBytes = 0; readedBytes < stack->size; readedBytes++){
-        hash += ((hash*31) ^ (size_t)(*byte_ptr++));
-    }
-    
+    ON_HASH(stack->hash = remembered_hash;)
 
     return hash;
+}
+
+static unsigned long summBytesToHash(unsigned long important_bytes, unsigned char* bytes_pointer){
+
+    unsigned long summaryOfBytesInHash = 0;
+
+    for (size_t readedBytes = 0; readedBytes < important_bytes; readedBytes++){
+        summaryOfBytesInHash += ( ( summaryOfBytesInHash * 32 ) ^ (size_t)( *bytes_pointer++ ) );
+    }
+
+    return summaryOfBytesInHash;
+
 }
