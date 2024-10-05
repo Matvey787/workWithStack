@@ -20,11 +20,11 @@ int stackInitDebug(stack_t* stack, const char* fileName, const int fileLine) {
     return stackInit(stack);
 }
 
-int stackInit(stack_t* stack){ // FIXME copypaste
+int stackInit(stack_t* stack){
 
 #ifdef TURN_ON_CANARIES
     stack->capacity = c_startCapacity+2;
-    stack->data = (StackElem_t*)calloc((stack->capacity), sizeof(StackElem_t)); // FIXME check
+    stack->data = (StackElem_t*)calloc((stack->capacity), sizeof(StackElem_t));
     stack->data[0] = canaryConst;
     stack->data[stack->capacity-1] = canaryConst;
 #else

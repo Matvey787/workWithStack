@@ -13,7 +13,7 @@ errors stackError(stack_t* stack){
     if (stack->size > stack->capacity) return LACK_OF_CAPACITY;
 
 #ifdef TURN_ON_CANARIES
-    if ((((int64_t)stack->data[0] != 0xDED) || ((int64_t)stack->data[stack->size + 1] != 0xDED)) && (stack->size > 0)) return WARNINNG_BROKEN_CANARY;
+    if ((((int64_t)stack->data[0] != 0xDED)) && (stack->size > 0)) return WARNINNG_BROKEN_CANARY;
 #endif
     ON_HASH(if (countHash(stack) != stack->hash) return WARNINNG_INCORRECT_HASH;)
 

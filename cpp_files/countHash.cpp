@@ -10,7 +10,7 @@ unsigned long countHash(stack_t* stack){
     long unsigned hash = 5381;
 
     hash += summBytesToHash(sizeof(stack), (unsigned char*)stack);
-    hash += summBytesToHash((stack->size)*sizeof(StackElem_t), (unsigned char*)stack->data);
+    hash += summBytesToHash((stack->size - 1)*sizeof(StackElem_t), (unsigned char*)stack->data);
 
     ON_HASH(stack->hash = remembered_hash;)
 
