@@ -44,4 +44,6 @@ int main(){
     MACRO_stackDump(stack);
 
     stackDestroy(&stack);
+
+    
 }
