@@ -45,7 +45,7 @@ int stackPush(stack_t* stack, double number){
 
 }
 
-double stackPop(stack_t* stack){
+StackElem_t stackPop(stack_t* stack){
 
     MACRO_stackAssertFunction((*stack));
     
