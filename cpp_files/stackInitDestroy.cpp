@@ -49,7 +49,7 @@ int stackInitDebug(stack_t* stack, size_t user_startCapacity, const char* fileNa
     return stackInit(stack, user_startCapacity);
 }
 
-int stackInit(stack_t* stack, size_t user_startCapacity){ // TODO
+int stackInit(stack_t* stack, size_t user_startCapacity){
 
 #ifdef TURN_ON_CANARIES
     stack->capacity = user_startCapacity+2;
