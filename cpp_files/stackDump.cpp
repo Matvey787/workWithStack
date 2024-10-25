@@ -36,7 +36,7 @@ void stackDump(stack_t* stack){
         printf("    stack[%lu] = ", i);
 
 
-        #ifdef TURN_ON_CANARIES // FIXME if else
+        #ifdef TURN_ON_CANARIES
             (i == 0 || i == stack->size+1) ? ((i == 0) ? printf("Left canary: %x \n", (unsigned)stack->data[i]) :
                                                          printf("Right canary: %x \n", (unsigned)stack->data[i])) :
                                               printf("%g \n", stack->data[i]);
